@@ -62,4 +62,4 @@ RUN mkdir /base/train
 COPY config/train_tfidf_logreg_en_faq.json /base/config/train_tfidf_logreg_en_faq.json
 
 # Shell form CMD is retained here to allow evaluation of the $LHC_API variable at runtime
-CMD python -m deeppavlov train /base/config/train_tfidf_logreg_en_faq.json && python -m deeppavlov riseapi "/base/config/$LHC_API"
+CMD ["sh", "-c", "python -m deeppavlov train /base/config/train_tfidf_logreg_en_faq.json && python -m deeppavlov riseapi \"/base/config/$LHC_API\""]
