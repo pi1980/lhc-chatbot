@@ -29,7 +29,8 @@ RUN python -m deeppavlov install /base/config/train_tfidf_logreg_en_faq.json \
     && pip install --no-cache-dir "scikit-learn==1.0.2" "scipy<1.10.0" "numpy<1.24.0" \
     && python -m deeppavlov download /base/config/train_tfidf_logreg_en_faq.json
 
-RUN python -m nltk.downloader -d /root/nltk_data \
+# Pre-download NLTK packages to the system-wide global directory
+RUN python -m nltk.downloader -d /usr/share/nltk_data \
     punkt \
     punkt_tab \
     stopwords \
@@ -61,7 +62,7 @@ ENV LANG='en_US.UTF-8' \
 COPY --from=builder --chown=dpuser:dpuser /venv /venv
 
 # 3. Copy NLTK and DeepPavlov data directly into dpuser's home directory
-COPY --from=builder --chown=dpuser:dpuser /root/nltk_data /home/dpuser/nltk_data
+COPY --from=builder /usr/share/nltk_data /usr/share/nltk_data
 COPY --from=builder --chown=dpuser:dpuser /root/.deeppavlov /home/dpuser/.deeppavlov
 
 # 4. Create working directories and explicitly grant ownership to dpuser
