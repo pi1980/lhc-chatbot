@@ -56,10 +56,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends locales \
 ENV LANG='en_US.UTF-8' \
     LANGUAGE='en_US.UTF-8' \
     LC_ALL='en_US.UTF-8' \
+    NLTK_DATA='/usr/share/nltk_data' \
     PATH="/venv/bin:$PATH"
 
 # 2. Copy the venv and change ownership to dpuser
 COPY --from=builder --chown=dpuser:dpuser /venv /venv
+COPY --from=builder /venv /venv
+COPY --from=builder /usr/share/nltk_data /usr/share/nltk_data
 
 # 3. Copy NLTK and DeepPavlov data directly into dpuser's home directory
 COPY --from=builder /usr/share/nltk_data /usr/share/nltk_data
